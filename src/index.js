@@ -7,7 +7,7 @@
 
 import { initializeApp } from 'firebase/app'
 import {
-  getFirestore, collection, getDocs, addDoc
+  getFirestore, collection, getDocs, addDoc, onSnapshot
 } from 'firebase/firestore'
 
 
@@ -34,12 +34,19 @@ const firebaseConfig = {
   //get reference
   const data = document.getElementsByClassName('bookform')[0];
 
-  //get collection data
-  getDocs(colRef)
-  .then((snapshot)=>{
-      snapshot.docs.forEach((doc)=>{
-        console.log(doc.data());
-      });
+  // //get collection data
+  // getDocs(colRef)
+  // .then((snapshot)=>{
+  //     snapshot.docs.forEach((doc)=>{
+  //       console.log(doc.data());
+  //     });
+  // })
+
+  //real time get collection
+  onSnapshot(colRef, (snapshot)=>{
+    snapshot.docs.forEach((doc)=>{
+      console.log(doc.data());
+    });
   })
 
   //add collection 
