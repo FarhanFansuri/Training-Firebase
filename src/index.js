@@ -7,7 +7,7 @@
 
 import { initializeApp } from 'firebase/app'
 import {
-  getFirestore, collection, getDocs, addDoc, onSnapshot, query, where
+  getFirestore, collection, getDocs, addDoc, onSnapshot, query, where, doc, deleteDoc
 } from 'firebase/firestore'
 
 
@@ -32,7 +32,7 @@ const firebaseConfig = {
   const colRef = collection(db,'books');
 
   //get reference
-  const data = document.getElementsByClassName('bookform')[0];
+  // const data = document.getElementsByClassName('bookform')[0];
 
   // //get collection data
   // getDocs(colRef)
@@ -45,21 +45,33 @@ const firebaseConfig = {
   const quer = query(colRef, where("author","==","Jinx"))
 
   //real time get collection
-  onSnapshot(quer, (snapshot)=>{
+  onSnapshot(colRef, (snapshot)=>{
     snapshot.docs.forEach((doc)=>{
-      console.log(doc.data());
+      console.log(doc.data(), doc.id);
     });
   })
 
-  //add collection 
-  data.addEventListener('submit',(e)=>{
+  // //add collection 
+  // data.addEventListener('submit',(e)=>{
 
-    e.preventDefault();
-    addDoc(colRef,{
-      title: data.title.value,
-      author: data.author.value
+  //   e.preventDefault();
+  //   addDoc(colRef,{
+  //     title: data.title.value,
+  //     author: data.author.value
+  //   })
+  // })
+
+
+  //delete collection
+  const deleteForm = document.getElementsByClassName('bookform')[0];
+  deleteForm.addEventListener('submit',(e)=>{
+    e.preventDefault()
+    const refDoc = doc(db,'books',deleteForm.id.value);
+    deleteDoc(refDoc).then(()=>{
+      deleteForm.reset
     })
   })
+
 
 
 
