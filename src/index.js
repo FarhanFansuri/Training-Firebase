@@ -7,7 +7,7 @@
 
 import { initializeApp } from 'firebase/app'
 import {
-  getFirestore, collection, getDocs, addDoc, onSnapshot
+  getFirestore, collection, getDocs, addDoc, onSnapshot, query, where
 } from 'firebase/firestore'
 
 
@@ -41,9 +41,11 @@ const firebaseConfig = {
   //       console.log(doc.data());
   //     });
   // })
+  //queries
+  const quer = query(colRef, where("author","==","Jinx"))
 
   //real time get collection
-  onSnapshot(colRef, (snapshot)=>{
+  onSnapshot(quer, (snapshot)=>{
     snapshot.docs.forEach((doc)=>{
       console.log(doc.data());
     });
@@ -58,5 +60,6 @@ const firebaseConfig = {
       author: data.author.value
     })
   })
+
 
 
